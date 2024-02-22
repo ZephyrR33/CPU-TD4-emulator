@@ -3,7 +3,8 @@
     "files.associations": {
         "iostream": "cpp",
         "xstring": "cpp",
-        "iosfwd": "cpp"
+        "iosfwd": "cpp",
+        "bitset": "cpp"
     },
     "C_Cpp.default.intelliSenseMode": "gcc-x64",
     "C_Cpp.files.exclude": {
