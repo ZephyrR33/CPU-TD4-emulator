@@ -17,6 +17,7 @@ int input_portA;
 int input_portB;
 int c_flag = 0;
 int count = 1;
+string program_counter_2;
 
 void purse_order(const string &op, int im)
 {
@@ -104,9 +105,9 @@ void purse_order(const string &op, int im)
 
     string registor_a_2 = bitset<4>(registor_a).to_string();
     string registor_b_2 = bitset<4>(registor_b).to_string();
-    string program_counter_2 = bitset<4>(program_counter - 1).to_string();
-
-    cout << "reg A: " << registor_a_2 << " reg B: " << registor_b_2 << " reg C: " << c_flag << " out: " << output_port;
+    string output_port_2 = bitset<4>(output_port).to_string();
+    
+    cout << "program counter: " << program_counter_2 << " reg A: " << registor_a_2 << " reg B: " << registor_b_2 << " C flag: " << c_flag << " out: " << output_port_2;
 
     if (c_flag == 1 && count == 1)
     {
@@ -165,9 +166,10 @@ int main()
         system("cls");
         string comand;
         while (true)
-        {
+        {  
+            program_counter_2 = bitset<4>(program_counter).to_string();
             cout << "Input port A: " << inputA << "\n";
-            cout << "Input port B: " << inputB << "\n";
+            cout << "Input port B: " << inputB << "\n\n";
             if (program_counter >= ope.size())
             {
                 program_counter = 0;
@@ -224,7 +226,7 @@ int main()
                 }
                 else if (op == "1001")
                 {
-                    comand = "OUT B";
+                    comand = "OUT B ";
                 }
                 else if (op == "1011")
                 {
@@ -238,7 +240,7 @@ int main()
                 {
                     cout << program_counter_3 << "  " << comand << inputB << endl;
                 }
-                else if (comand != "MOV A, B" || comand != "MOV B, A" || comand != "OUT B")
+                else if (comand != "MOV A, B" || comand != "MOV B, A" || comand != "OUT B ")
                 {
                     cout << program_counter_3 << "  " << comand << im_str << endl;
                 }
