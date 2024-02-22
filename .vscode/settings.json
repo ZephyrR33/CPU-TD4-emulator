@@ -4,5 +4,10 @@
         "iostream": "cpp",
         "xstring": "cpp",
         "iosfwd": "cpp"
+    },
+    "C_Cpp.default.intelliSenseMode": "gcc-x64",
+    "C_Cpp.files.exclude": {
+        "**/.vscode": true,
+        "**/.vs": true
     }
 }
