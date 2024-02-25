@@ -9,8 +9,8 @@
 #include <map>
 using namespace std;
 char keyboard;
-int registor_a = 0, c_flag_text = 0, registor_b = 0, program_counter = 0, output_port = 0, input_portA = 0, input_portB = 0, c_flag = 0, count = 1;
-string program_counter_3, inputA = "0000", inputB = "0000", im_str, registor_a_2 = "0000", registor_b_2 = "0000", program_counter_2 = "0000", output_port_2 = "0000";
+int registor_a, c_flag_text, registor_b, program_counter, output_port, input_portA, input_portB, c_flag, count;
+string program_counter_3, inputA, inputB, im_str, registor_a_2, registor_b_2, program_counter_2, output_port_2;
 
 void defolt()
 {
@@ -123,22 +123,22 @@ void purse_order(const string &op, int im)
 
 int main()
 {
+    map<string, string> instructions = {
+        {"0000", "ADD A, "},
+        {"0101", "ADD B, "},
+        {"0011", "MOV A, "},
+        {"0111", "MOV B, "},
+        {"0001", "MOV A, B"},
+        {"0100", "MOV B, A"},
+        {"1111", "JMP "},
+        {"1110", "JNC "},
+        {"0010", "IN A "},
+        {"0110", "IN B "},
+        {"1001", "OUT B "},
+        {"1011", "OUT "}};
     do
     {
         defolt();
-        map<string, string> instructions;
-        instructions["0000"] = "ADD A, ";
-        instructions["0101"] = "ADD B, ";
-        instructions["0011"] = "MOV A, ";
-        instructions["0111"] = "MOV B, ";
-        instructions["0001"] = "MOV A, B";
-        instructions["0100"] = "MOV B, A";
-        instructions["1111"] = "JMP ";
-        instructions["1110"] = "JNC ";
-        instructions["0010"] = "IN A ";
-        instructions["0110"] = "IN B ";
-        instructions["1001"] = "OUT B ";
-        instructions["1011"] = "OUT ";
         cout << "\033[2J\033[1;1H";
         vector<pair<string, string>> ope;
         string open;
