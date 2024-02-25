@@ -9,13 +9,35 @@
 #include <map>
 using namespace std;
 char keyboard;
-int registor_a = 0, registor_b = 0, program_counter = 0, output_port = 0, input_portA = 0, input_portB = 0, c_flag = 0, count = 1;
-string inputA = "0000", inputB = "0000", registor_a_2 = "0000", registor_b_2 = "0000", program_counter_2 = "0000", output_port_2 = "0000";
+int registor_a = 0, c_flag_text = 0, registor_b = 0, program_counter = 0, output_port = 0, input_portA = 0, input_portB = 0, c_flag = 0, count = 1;
+string program_counter_3, inputA = "0000", inputB = "0000", im_str, registor_a_2 = "0000", registor_b_2 = "0000", program_counter_2 = "0000", output_port_2 = "0000";
+
+void defolt()
+{
+    registor_a = 0;
+    c_flag_text = 0;
+    registor_b = 0;
+    program_counter = 0;
+    output_port = 0;
+    input_portA = 0;
+    input_portB = 0;
+    c_flag = 0;
+    count = 1;
+    program_counter_3;
+    inputA = "0000";
+    inputB = "0000";
+    im_str;
+    registor_a_2 = "0000";
+    registor_b_2 = "0000";
+    program_counter_2 = "0000";
+    output_port_2 = "0000";
+}
 
 void purse_order(const string &op, int im)
 {
-    if (op == "0000")
+    switch (stoi(op, nullptr, 2))
     {
+    case 0:
         if ((registor_a + im) > 15)
         {
             registor_a = (registor_a + im) - 15;
@@ -26,9 +48,8 @@ void purse_order(const string &op, int im)
             registor_a = registor_a + im;
         }
         program_counter++;
-    }
-    else if (op == "0101")
-    {
+        break;
+    case 5:
         if ((registor_b + im) > 15)
         {
             registor_b = (registor_b + im) - 15;
@@ -39,33 +60,27 @@ void purse_order(const string &op, int im)
             registor_b = registor_b + im;
         }
         program_counter++;
-    }
-    else if (op == "0011")
-    {
+        break;
+    case 3:
         registor_a = im;
         program_counter++;
-    }
-    else if (op == "0111")
-    {
+        break;
+    case 7:
         registor_b = im;
         program_counter++;
-    }
-    else if (op == "0001")
-    {
+        break;
+    case 1:
         registor_a = registor_b;
         program_counter++;
-    }
-    else if (op == "0100")
-    {
+        break;
+    case 4:
         registor_b = registor_a;
         program_counter++;
-    }
-    else if (op == "1111")
-    {
+        break;
+    case 15:
         program_counter = im;
-    }
-    else if (op == "1110")
-    {
+        break;
+    case 14:
         if (c_flag == 0)
         {
             program_counter = im;
@@ -74,29 +89,26 @@ void purse_order(const string &op, int im)
         {
             program_counter++;
         }
-    }
-    else if (op == "0010")
-    {
+        break;
+    case 2:
         registor_a = input_portA;
         program_counter++;
-    }
-    else if (op == "0110")
-    {
+        break;
+    case 6:
         registor_b = input_portB;
         program_counter++;
-    }
-    else if (op == "1001")
-    {
+        break;
+    case 9:
         output_port = registor_b;
         program_counter++;
-    }
-    else if (op == "1011")
-    {
+        break;
+    case 11:
         output_port = im;
         program_counter++;
+        break;
     }
 
-    cout << "program counter: " << program_counter_2 << " reg A: " << registor_a_2 << " reg B: " << registor_b_2 << " C flag: " << c_flag << " out: " << output_port_2;
+    cout << "program counter: " << program_counter_2 << " reg A: " << registor_a_2 << " reg B: " << registor_b_2 << " C flag: " << c_flag_text << " out: " << output_port_2;
 
     if (c_flag == 1 && count == 1)
     {
@@ -113,6 +125,7 @@ int main()
 {
     do
     {
+        defolt();
         map<string, string> instructions;
         instructions["0000"] = "ADD A, ";
         instructions["0101"] = "ADD B, ";
@@ -149,7 +162,7 @@ int main()
         }
         for (int i = 0; i < ope.size(); i++)
         {
-            string program_counter_3 = bitset<4>(i).to_string();
+            program_counter_3 = bitset<4>(i).to_string();
             const auto &[op, im_str] = ope[i];
             if (op == "0010")
             {
@@ -169,6 +182,7 @@ int main()
         do
         {
             system("cls");
+            c_flag_text = c_flag;
             registor_a_2 = bitset<4>(registor_a).to_string();
             registor_b_2 = bitset<4>(registor_b).to_string();
             output_port_2 = bitset<4>(output_port).to_string();
@@ -182,7 +196,7 @@ int main()
 
             for (int i = 0; i < ope.size(); i++)
             {
-                string program_counter_3 = bitset<4>(i).to_string();
+                program_counter_3 = bitset<4>(i).to_string();
                 const auto &[op, im_str] = ope[i];
                 if (program_counter == i)
                 {
@@ -215,5 +229,6 @@ int main()
             keyboard = getch();
 
         } while (keyboard == ' ');
-    } while (keyboard == '\r');
+    } while (keyboard == 'r');
+    return 0;
 }

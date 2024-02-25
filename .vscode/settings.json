@@ -5,7 +5,8 @@
         "xstring": "cpp",
         "iosfwd": "cpp",
         "bitset": "cpp",
-        "map": "cpp"
+        "map": "cpp",
+        "string": "cpp"
     },
     "C_Cpp.default.intelliSenseMode": "gcc-x64",
     "C_Cpp.files.exclude": {
