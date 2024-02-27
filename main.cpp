@@ -7,8 +7,10 @@
 #include <fstream>
 #include <conio.h>
 #include <map>
+#include <iomanip>
+#include <stdio.h>
 using namespace std;
-char keyboard;
+wchar_t keyboard;
 int registor_a, c_flag_text, registor_b, program_counter, output_port, input_portA, input_portB, c_flag, count;
 string program_counter_3, inputA, inputB, im_str, registor_a_2, registor_b_2, program_counter_2, output_port_2;
 
@@ -141,18 +143,31 @@ int main()
         defolt();
         cout << "\033[2J\033[1;1H";
         vector<pair<string, string>> ope;
+        ifstream inFile("instruction.bin", ios::binary);
         string open;
 
-        ifstream file("instruction.txt");
-        if (file.is_open())
+        if (!inFile.is_open())
         {
-            getline(file, open);
+            cerr << "Ошибка открытия входного файла\n";
+            return 1;
         }
-        else
+
+        char byte;
+        while (inFile.get(byte))
         {
-            cout << "Error open file!";
+            // Преобразуем байт в его шестнадцатеричное представление
+            stringstream hexStream;
+            hexStream << hex << setw(2) << setfill('0') << static_cast<int>(static_cast<unsigned char>(byte));
+            string hexString = hexStream.str();
+
+            // Преобразуем шестнадцатеричное представление в двоичное представление
+            string binaryString = bitset<8>(stoi(hexString, nullptr, 16)).to_string();
+
+            // Добавляем двоичное представление в строку
+            open += binaryString.substr(0, 4) + " " + binaryString.substr(4, 4) + " ";
         }
-        file.close();
+
+        inFile.close();
 
         istringstream iss(open);
         string op, im;
@@ -198,37 +213,42 @@ int main()
             {
                 program_counter_3 = bitset<4>(i).to_string();
                 const auto &[op, im_str] = ope[i];
-                if (program_counter == i)
-                {
-                    cout << "\x1b[32m";
-                }
+                if (op == "0000" && im_str == "0000") break;
+                else{
+                    if (program_counter == i)
+                    {
+                        cout << "\x1b[32m";
+                    }
 
-                if (instructions[op] == "IN A ")
-                {
-                    cout << program_counter_3 << "  " << instructions[op] << inputA << endl;
+                    if (instructions[op] == "IN A ")
+                    {
+                        cout << program_counter_3 << "  " << instructions[op] << inputA << endl;
+                    }
+                    else if (instructions[op] == "IN B ")
+                    {
+                        cout << program_counter_3 << "  " << instructions[op] << inputB << endl;
+                    }
+                    else if (instructions[op] != "MOV A, B" || instructions[op] != "MOV B, A" || instructions[op] != "OUT B ")
+                    {
+                        cout << program_counter_3 << "  " << instructions[op] << im_str << endl;
+                    }
+                    else
+                    {
+                        cout << program_counter_3 << "  " << instructions[op] << endl;
+                    }
+                    cout << "\x1b[0m";
                 }
-                else if (instructions[op] == "IN B ")
-                {
-                    cout << program_counter_3 << "  " << instructions[op] << inputB << endl;
-                }
-                else if (instructions[op] != "MOV A, B" || instructions[op] != "MOV B, A" || instructions[op] != "OUT B ")
-                {
-                    cout << program_counter_3 << "  " << instructions[op] << im_str << endl;
-                }
-                else
-                {
-                    cout << program_counter_3 << "  " << instructions[op] << endl;
-                }
-                cout << "\x1b[0m";
             }
             cout << "\n";
+            if (op == "0000" && im_str == "0000") break;
+            else{
+                const auto &[op, im_str] = ope[program_counter];
+                int im = stoi(im_str, nullptr, 2);
+                purse_order(op, im);
 
-            const auto &[op, im_str] = ope[program_counter];
-            int im = stoi(im_str, nullptr, 2);
-            purse_order(op, im);
-            keyboard = getch();
-
+                keyboard = _getwch();
+            }
         } while (keyboard == ' ');
-    } while (keyboard == 'r');
+    } while (keyboard == 'r' || keyboard == 'R' || keyboard == L'к' || keyboard == L'К');
     return 0;
 }
