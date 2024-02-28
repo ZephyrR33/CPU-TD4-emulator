@@ -247,8 +247,11 @@ int main()
                 purse_order(op, im);
 
                 keyboard = _getwch();
+                while(keyboard != L' ' && keyboard != L'r' && keyboard != L'R' && keyboard != L'к' && keyboard != L'К' && keyboard != 0x1B){
+                    keyboard = _getwch();
+                }
             }
-        } while (keyboard == ' ');
-    } while (keyboard == 'r' || keyboard == 'R' || keyboard == L'к' || keyboard == L'К');
+        } while (keyboard == L' ');
+    } while (keyboard == L'r' || keyboard == L'R' || keyboard == L'к' || keyboard == L'К');
     return 0;
 }
