@@ -21,8 +21,8 @@ void defolt()
     registor_b = 0;
     program_counter = 0;
     output_port = 0;
-    input_portA = 0;
-    input_portB = 0;
+    input_portA = 16;
+    input_portB = 16;
     c_flag = 0;
     count = 1;
     program_counter_3;
@@ -148,22 +148,20 @@ int main()
 
         if (!inFile.is_open())
         {
-            cerr << "Ошибка открытия входного файла\n";
+            cerr << "Error open file!\n";
+            Sleep(3000);
             return 1;
         }
 
         char byte;
         while (inFile.get(byte))
         {
-            // Преобразуем байт в его шестнадцатеричное представление
             stringstream hexStream;
             hexStream << hex << setw(2) << setfill('0') << static_cast<int>(static_cast<unsigned char>(byte));
             string hexString = hexStream.str();
 
-            // Преобразуем шестнадцатеричное представление в двоичное представление
             string binaryString = bitset<8>(stoi(hexString, nullptr, 16)).to_string();
 
-            // Добавляем двоичное представление в строку
             open += binaryString.substr(0, 4) + " " + binaryString.substr(4, 4) + " ";
         }
 
@@ -179,21 +177,33 @@ int main()
         {
             program_counter_3 = bitset<4>(i).to_string();
             const auto &[op, im_str] = ope[i];
-            if (op == "0010")
+            if (instructions.count(op) == 0)
             {
-                cout << "Input port A: ";
-                cin >> inputA;
-                input_portA = stoi(inputA, nullptr, 2);
+                cerr << "Error, '" << op << "', not can be intsructon!";
+                Sleep(3000);
+                return 1;
             }
-            else if (op == "0110")
+            do
             {
-                cout << "Input port B: ";
-                cin >> inputB;
-                input_portB = stoi(inputB, nullptr, 2);
-            }
+                if (op == "0010")
+                {
+
+                    cout << "Input port A: ";
+
+                    cin >> inputA;
+                    input_portA = stoi(inputA, nullptr, 2);
+                }
+                else if (op == "0110")
+                {
+                    cout << "Input port B: ";
+
+                    cin >> inputB;
+                    input_portB = stoi(inputB, nullptr, 2);
+                }
+                system("cls");
+            } while (inputA.length() != 4);
         }
 
-        system("cls");
         do
         {
             system("cls");
@@ -213,8 +223,10 @@ int main()
             {
                 program_counter_3 = bitset<4>(i).to_string();
                 const auto &[op, im_str] = ope[i];
-                if (op == "0000" && im_str == "0000") break;
-                else{
+                if (op == "0000" && im_str == "0000")
+                    break;
+                else
+                {
                     if (program_counter == i)
                     {
                         cout << "\x1b[32m";
@@ -240,14 +252,17 @@ int main()
                 }
             }
             cout << "\n";
-            if (op == "0000" && im_str == "0000") break;
-            else{
+            if (op == "0000" && im_str == "0000")
+                break;
+            else
+            {
                 const auto &[op, im_str] = ope[program_counter];
                 int im = stoi(im_str, nullptr, 2);
                 purse_order(op, im);
 
                 keyboard = _getwch();
-                while(keyboard != L' ' && keyboard != L'r' && keyboard != L'R' && keyboard != L'к' && keyboard != L'К' && keyboard != 0x1B){
+                while (keyboard != L' ' && keyboard != L'r' && keyboard != L'R' && keyboard != L'к' && keyboard != L'К' && keyboard != 0x1B)
+                {
                     keyboard = _getwch();
                 }
             }
