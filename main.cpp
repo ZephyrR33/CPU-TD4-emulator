@@ -21,8 +21,8 @@ void defolt()
     registor_b = 0;
     program_counter = 0;
     output_port = 0;
-    input_portA = 16;
-    input_portB = 16;
+    input_portA = 0;
+    input_portB = 0;
     c_flag = 0;
     count = 1;
     program_counter_3;
